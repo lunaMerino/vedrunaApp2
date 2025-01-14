@@ -1,2 +1,2 @@
 export { HomeScreen } from "./HomeScreen";
-export { SettingScreen } from "./SettingScreen";
+export { SettingsScreen } from "./SettingsScreen";
