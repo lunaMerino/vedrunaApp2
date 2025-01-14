@@ -8,4 +8,3 @@ export function RegisterScreen() {
     </View>
   )
 }
-RegisterScreen.displayName = 'RegisterScreen';

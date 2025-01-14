@@ -8,4 +8,3 @@ export function Tab() {
     </View>
   )
 }
-Tab.displayName = 'Tab';
