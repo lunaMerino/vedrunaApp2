@@ -1,10 +1,10 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-export function Tab({navigation}) {
+export function SettingScreen() {
   return (
     <View>
-      <Text style>Tab</Text>
+      <Text>SettingScreen</Text>
     </View>
   )
 }

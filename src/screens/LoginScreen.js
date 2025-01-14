@@ -37,14 +37,19 @@ export function LoginScreen({ navigation }) {
 
           {/* Login Button */}
           <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Log in</Text>
+            <Text style={styles.buttonText}
+            onPress={() => navigation.navigate('Tab')}
+            >Log in</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.createAccountContainer}>
         {/* Create Account */}
           <Text style={styles.createAccount}>
-            ¿No tienes cuenta? <Text style={styles.createAccountLink}>Crear cuenta</Text>
+            ¿No tienes cuenta?
+            <Text style={styles.createAccountLink}
+              onPress={() => navigation.navigate('Register')}
+              >Crear cuenta</Text>
           </Text>
         </View>
       </View>
