@@ -13,7 +13,7 @@ export function TabNavigation() {
         tabBarStyle: { backgroundColor: theme.colors.blackish,
           borderTopWidth: 0
         },
-        tabBarActiveTintColor: "#ffffff",
+        tabBarActiveTintColor: theme.colors.green,
         tabBarInactiveTintColor: "#aaa",
       }}
     >
