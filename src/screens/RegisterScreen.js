@@ -1,8 +1,41 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import { theme } from './theme';
+import { auth } from './utils/Firebase';
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export function RegisterScreen({ navigation }) {
+  const [form, setForm] = useState({
+    nick: '',
+    name: '',
+    lastName1: '',
+    lastName2: '',
+    email: '',
+    password: '',
+  });
+
+  const handleInputChange = (field, value) => {
+    setForm({ ...form, [field]: value });
+  };
+
+  const handleSubmit = () => {
+    const { email, password, nick, name, lastName1, lastName2 } = form;
+
+    if (!email || !password || !nick || !name || !lastName1 || !lastName2) {
+      Alert.alert('Error', 'Todos los campos son obligatorios');
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        Alert.alert('Registro exitoso', 'Usuario creado correctamente');
+        console.log('Usuario registrado:', { nick, name, lastName1, lastName2 });
+      })
+      .catch((error) => {
+        Alert.alert('Error', error.message);
+      });
+  };
+  
   return (
     <View style={styles.container}>
       <View style={styles.header}>
