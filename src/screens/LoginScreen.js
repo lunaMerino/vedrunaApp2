@@ -1,8 +1,28 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import { theme } from './theme';
+import { auth } from './utils/Firebase.js';
 
 export function LoginScreen({ navigation }) {
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Por favor, introduce correo y contraseña');
+      return;
+    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        Alert.alert('Éxito', 'Has iniciado sesión correctamente');
+        navigation.navigate('Tab');
+      })
+      .catch((error) => {
+        Alert.alert('Error', error.message);
+      });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -32,9 +52,8 @@ export function LoginScreen({ navigation }) {
 
           <Text style={styles.forgotPassword}>¿Olvidaste la contraseña?</Text>
 
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tab')}>
             <Text style={styles.buttonText}
-            onPress={() => navigation.navigate('Tab')}
             >Log in</Text>
           </TouchableOpacity>
         </View>

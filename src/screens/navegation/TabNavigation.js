@@ -14,7 +14,7 @@ export function TabNavigation() {
           borderTopWidth: 0
         },
         tabBarActiveTintColor: theme.colors.green,
-        tabBarInactiveTintColor: "#aaa",
+        tabBarInactiveTintColor: theme.colors.lightGray,
       }}
     >
       <Tab.Screen
