@@ -12,6 +12,7 @@ export function RegisterScreen({ navigation }) {
     lastName2: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
 
   const handleInputChange = (field, value) => {
@@ -30,6 +31,7 @@ export function RegisterScreen({ navigation }) {
       .then(() => {
         Alert.alert('Registro exitoso', 'Usuario creado correctamente');
         console.log('Usuario registrado:', { nick, name, lastName1, lastName2 });
+        navigation.navigate('Login');
       })
       .catch((error) => {
         Alert.alert('Error', error.message);
@@ -51,43 +53,56 @@ export function RegisterScreen({ navigation }) {
           style={styles.input}
           placeholder="Introduzca su correo"
           placeholderTextColor={theme.colors.darkGray}
+          value={form.email}
+          onChangeText={(value) => handleInputChange('email', value)}
         />
         <TextInput
           style={styles.input}
           placeholder="Introduzca contraseña"
           placeholderTextColor={theme.colors.darkGray}
+          value={form.password}
+          onChangeText={(value) => handleInputChange('password', value)}
           secureTextEntry
         />
         <TextInput
           style={styles.input}
           placeholder="Repita contraseña"
           placeholderTextColor={theme.colors.darkGray}
+          value={form.confirmPassword}
+          onChangeText={(value) => handleInputChange('confirmPassword', value)}
           secureTextEntry
         />
         <TextInput
           style={styles.input}
           placeholder="Introduzca su nick"
           placeholderTextColor={theme.colors.darkGray}
+          value={form.nick}
+          onChangeText={(value) => handleInputChange('nick', value)}
         />
         <TextInput
           style={styles.input}
           placeholder="Introduzca su nombre"
           placeholderTextColor={theme.colors.darkGray}
+          value={form.name}
+          onChangeText={(value) => handleInputChange('name', value)}
         />
         <TextInput
           style={styles.input}
           placeholder="Introduzca su primer apellido"
           placeholderTextColor={theme.colors.darkGray}
+          value={form.lastName1}
+          onChangeText={(value) => handleInputChange('lastName1', value)}
         />
         <TextInput
           style={styles.input}
           placeholder="Introduzca su segundo apellido"
           placeholderTextColor={theme.colors.darkGray}
+          value={form.lastName2}
+          onChangeText={(value) => handleInputChange('lastName2', value)}
         />
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
           <Text style={styles.buttonText}
-          onPress={() => navigation.navigate('Login')}
           >FINALIZAR</Text>
         </TouchableOpacity>
       </View>
