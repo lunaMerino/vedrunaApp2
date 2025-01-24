@@ -1,2 +1,2 @@
-export { HomeScreen } from "./HomeScreen";
-export { SettingsScreen } from "./SettingsScreen";
+export { PublicationScreen } from "./PublicationScreen";
+export { Add } from "./Add";

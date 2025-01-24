@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { HomeScreen, SettingsScreen } from "../tabs/index";
+import { PublicationScreen, Add } from "../tabs/index";
 import React from "react";
 import { theme } from "../theme";
 
@@ -19,7 +19,7 @@ export function TabNavigation() {
     >
       <Tab.Screen
         name="Publicaciones"
-        component={ HomeScreen }
+        component={ PublicationScreen }
 
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -28,12 +28,12 @@ export function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="Ajustes"
-        component={ SettingsScreen }
+        name="Añadir"
+        component={ Add }
 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings" color={color} size={size} />
+            <Ionicons name="add-circle" color={color} size={size} />
           ),
         }}
       />

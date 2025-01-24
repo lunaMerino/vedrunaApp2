@@ -2,10 +2,10 @@ import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { theme } from '../theme'
 
-export function SettingsScreen() {
+export function Add() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Settings</Text>
+      <Text style={styles.title}>Add</Text>
     </View>
   )
 }

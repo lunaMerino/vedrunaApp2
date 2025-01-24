@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, Image, StyleSheet, Alert } from 'react-native';
 import { theme } from './theme';
 import { auth } from './utils/Firebase';
+import Button from './components/Button';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export function RegisterScreen({ navigation }) {
@@ -26,17 +27,57 @@ export function RegisterScreen({ navigation }) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
       return;
     }
+     // Validación de contraseñas
+     if (password !== confirmPassword) {
+      Alert.alert('Error', 'Las contraseñas no coinciden');
+      return;
+    }
 
     createUserWithEmailAndPassword(auth, email, password)
-      .then(() => {
-        Alert.alert('Registro exitoso', 'Usuario creado correctamente');
-        console.log('Usuario registrado:', { nick, name, lastName1, lastName2 });
-        navigation.navigate('Login');
+    .then((userCredential) => {
+      const firebaseUID = userCredential.user.uid;
+      console.log('Usuario creado en Firebase:', user.uid);
+
+      // Enviar datos del usuario a la base de datos
+      const newUser = {
+        nick,
+        user_id: firebaseUID,
+        nombre: name,
+        apellidos: `${lastName1} ${lastName2}`,
+        profile_picture: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fes.pngtree.com%2Ffree-png-vectors%2Favatar-de-usuario&psig=AOvVaw0WSQzs5fHLf6vaNzywnmAc&ust=1737744280207000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCOD07YrAjIsDFQAAAAAdAAAAABAJ',
+      };
+
+      console.log('Datos enviados al backend:', newUser);
+
+       return fetch('http://192.168.1.23:8080/proyecto01/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
       })
-      .catch((error) => {
-        Alert.alert('Error', error.message);
-      });
-  };
+        .then((response) => {
+          console.log('Respuesta del servidor (status):', response.status); // Log para ver el código de estado HTTP
+          return response.json().then((data) => {
+            console.log('Respuesta del servidor (body):', data); // Log para ver el contenido de la respuesta
+            if (response.ok) {
+              Alert.alert('Registro exitoso', 'Usuario creado correctamente');
+              navigation.navigate('Login');
+            } else {
+              throw new Error(data.message || 'Error al registrar en la base de datos');
+            }
+          });
+        })
+        .catch((error) => {
+          console.error('Error en el fetch:', error); // Log para capturar errores en el fetch
+          Alert.alert('Error', `Error al guardar en la base de datos: ${error.message}`);
+        });
+    })
+    .catch((error) => {
+      console.error('Error al crear usuario en Firebase:', error); // Log para errores en Firebase
+      Alert.alert('Error', `Error al crear usuario: ${error.message}`);
+    });
+};
   
   return (
     <View style={styles.container}>
@@ -101,10 +142,9 @@ export function RegisterScreen({ navigation }) {
           onChangeText={(value) => handleInputChange('lastName2', value)}
         />
 
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-          <Text style={styles.buttonText}
-          >FINALIZAR</Text>
-        </TouchableOpacity>
+        <View style={styles.foot}>
+        <Button label='FINALIZAR' onPress={() => {}} />
+        </View>
       </View>
     </View>
   );
@@ -152,21 +192,7 @@ const styles = StyleSheet.create({
     color: theme.colors.lightGray,
     marginBottom: 15,
   },
-  button: {
-    width: '40%',
-    height: 40,
-    backgroundColor: theme.colors.blackish,
-    borderRadius: 8,
-    borderWidth : 2,
-    borderColor: theme.colors.green,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
+  foot:{
     marginTop: 40,
-  },
-  buttonText: {
-    color: theme.colors.lightGray,
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
+  }
 });
