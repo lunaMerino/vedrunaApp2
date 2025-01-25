@@ -21,7 +21,7 @@ export function RegisterScreen({ navigation }) {
   };
 
   const handleSubmit = () => {
-    const { email, password, nick, name, lastName1, lastName2 } = form;
+    const { email, password, confirmPassword, nick, name, lastName1, lastName2 } = form;
 
     if (!email || !password || !nick || !name || !lastName1 || !lastName2) {
       Alert.alert('Error', 'Todos los campos son obligatorios');
@@ -36,7 +36,7 @@ export function RegisterScreen({ navigation }) {
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const firebaseUID = userCredential.user.uid;
-      console.log('Usuario creado en Firebase:', user.uid);
+      console.log('Usuario creado en Firebase:', firebaseUID);
 
       // Enviar datos del usuario a la base de datos
       const newUser = {
@@ -143,8 +143,14 @@ export function RegisterScreen({ navigation }) {
         />
 
         <View style={styles.foot}>
-        <Button label='FINALIZAR' onPress={() => {}} />
+        <Button label='REGISTRARSE' onPress={handleSubmit} />
         </View>
+
+        {/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+          <Text style={styles.buttonText}
+          >FINALIZAR</Text>
+        </TouchableOpacity> */}
+
       </View>
     </View>
   );

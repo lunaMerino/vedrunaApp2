@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import { theme } from './theme';
 import { auth } from './utils/Firebase.js';
-
+import { signInWithEmailAndPassword } from "firebase/auth";
 export function LoginScreen({ navigation }) {
   
   const [email, setEmail] = useState('');
@@ -24,6 +24,7 @@ export function LoginScreen({ navigation }) {
       });
   };
   return (
+    
     <View style={styles.container}>
       <View style={styles.header}>
 
@@ -40,19 +41,23 @@ export function LoginScreen({ navigation }) {
             <TextInput
               style={styles.input}
               placeholder="Introduzca su correo o nick..."
-              placeholderTextColor={theme.colors.darkGray} 
+              placeholderTextColor={theme.colors.darkGray}
+              value={email}
+              onChangeText={setEmail}
             />
             <TextInput
               style={styles.input}
               placeholder="Introduzca su contraseña..."
               placeholderTextColor={theme.colors.darkGray} 
               secureTextEntry
+              value={password}
+              onChangeText={setPassword}
             />
           </View>
 
           <Text style={styles.forgotPassword}>¿Olvidaste la contraseña?</Text>
 
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Tab')}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}
             >Log in</Text>
           </TouchableOpacity>
