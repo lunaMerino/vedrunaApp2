@@ -46,6 +46,9 @@ export function RegisterScreen({ navigation }) {
         apellidos: `${lastName1} ${lastName2}`,
         profile_picture: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fes.pngtree.com%2Ffree-png-vectors%2Favatar-de-usuario&psig=AOvVaw0WSQzs5fHLf6vaNzywnmAc&ust=1737744280207000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCOD07YrAjIsDFQAAAAAdAAAAABAJ',
       };
+      // Pasar el UID como prop al siguiente componente
+      // Alert.alert('firebaseUID antes de navegar:', firebaseUID);
+      // navigation.navigate('Add', { user_id: firebaseUID }); 
 
       console.log('Datos enviados al backend:', newUser);
 
@@ -69,13 +72,13 @@ export function RegisterScreen({ navigation }) {
           });
         })
         .catch((error) => {
-          console.error('Error en el fetch:', error); // Log para capturar errores en el fetch
+          console.error('Error al guardar en la base de datos:', error); // Log específico del backend
           Alert.alert('Error', `Error al guardar en la base de datos: ${error.message}`);
         });
     })
     .catch((error) => {
-      console.error('Error al crear usuario en Firebase:', error); // Log para errores en Firebase
-      Alert.alert('Error', `Error al crear usuario: ${error.message}`);
+      console.error('Error al crear usuario en Firebase:', error); // Log específico de Firebase
+      Alert.alert('Error', `Error al crear usuario en Firebase: ${error.message}`);
     });
 };
   

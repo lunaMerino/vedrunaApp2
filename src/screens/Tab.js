@@ -1,8 +1,9 @@
 import React from 'react'
 import { TabNavigation } from './navegation/TabNavigation'
 
-export function Tab({navigation}) {
+export function Tab({route }) {
+  const { user_id } = route.params || {};
   return (
-      <TabNavigation />
+    <TabNavigation route={{ params: { user_id } }} />
   )
 }

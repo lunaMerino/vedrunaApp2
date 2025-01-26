@@ -15,9 +15,10 @@ export function LoginScreen({ navigation }) {
       return;
     }
     signInWithEmailAndPassword(auth, email, password)
-      .then(() => {
+      .then((userCredential) => {
+        const firebaseUID = userCredential.user.uid;
         Alert.alert('Éxito', 'Has iniciado sesión correctamente');
-        navigation.navigate('Tab');
+        navigation.navigate('Tab', { user_id: firebaseUID });
       })
       .catch((error) => {
         Alert.alert('Error', error.message);

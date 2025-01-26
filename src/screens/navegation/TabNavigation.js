@@ -4,8 +4,11 @@ import { PublicationScreen, Add } from "../tabs/index";
 import React from "react";
 import { theme } from "../theme";
 
-export function TabNavigation() {
+export function TabNavigation({ route }) {
   const Tab = createBottomTabNavigator();
+
+  const { params } = route;
+  const user_id = params?.user_id;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -30,7 +33,7 @@ export function TabNavigation() {
       <Tab.Screen
         name="Añadir"
         component={ Add }
-
+        initialParams={{ user_id }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle" color={color} size={size} />

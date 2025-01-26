@@ -1,13 +1,16 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, Platform, ScrollView, Keyboard, TouchableWithoutFeedback  } from 'react-native';
+import { Alert,View, Text, TextInput, StyleSheet, TouchableOpacity, Image, Keyboard, TouchableWithoutFeedback  } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { theme } from '../theme';
 import Button from '../components/Button';
 import * as ImagePicker from 'expo-image-picker';
 import Modal from 'react-native-modal';
 
-export function Add() {
+export function Add({ navigation, route }) {
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const { user_id } = route.params || {};
+  const [titulo, setTitulo] = useState('');
+  const [descripcion, setDescripcion] = useState('');
 
   // Solicitar permisos al iniciar la app
   useEffect(() => {
@@ -92,13 +95,19 @@ export function Add() {
 
 // Guardar URL en MongoDB
 const saveToDatabase = async (imageUrl) => {
+  const newPubli = {
+    user_id: user_id,
+    image_url: imageUrl,
+    titulo: titulo,
+    comentario:descripcion,
+  };
   try {
     const response = await fetch('http://192.168.1.23:8080/proyecto01/publicaciones', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ imageUrl }),
+      body: JSON.stringify(newPubli),
     });
 
     const result = await response.json();
@@ -117,6 +126,7 @@ const handleSubmit = async () => {
     // Subir imagen a Cloudinary
     await uploadToCloudinary(selectedImage);
     alert("Publicación realizada con éxito.");
+    navigation.navigate('Publicaciones');
   } catch (error) {
     console.error("Error al publicar:", error);
     alert("Hubo un error al realizar la publicación. Intenta nuevamente.");
@@ -168,6 +178,8 @@ const handleSubmit = async () => {
             style={styles.input}
             placeholder="Máx. 40 Caracteres"
             placeholderTextColor={theme.colors.darkGray}
+            value={titulo}
+            onChangeText={setTitulo}
           />
           <Text style={styles.title2}>Descripción:</Text>
           <TextInput
@@ -178,6 +190,8 @@ const handleSubmit = async () => {
             height={200}
             textAlignVertical="top"
             paddingTop={10}
+            value={descripcion}
+            onChangeText={setDescripcion}
           />
         </View>
 
