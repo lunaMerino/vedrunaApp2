@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator, Alert } from 'react-native'
+import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator, TouchableOpacity, ImageBackground } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { theme } from '../theme'
 import { API_IP, API_PORT } from '@env';
+import LikeButton from '../components/LikeButton';
 
 export function PublicationScreen() {
   
@@ -9,7 +10,7 @@ export function PublicationScreen() {
   const [ posts, setPosts ] = useState([]); // Para almacenar las publicaciones
   const [ users, setUsers ] = useState([]);
   const [ loading, setLoading ] = useState(true); // Para manejar el estado de carga
-
+  
   // Usamos useEffect para hacer la llamada a la API cuando se monte el componente
   useEffect(() => {
     const fetchPosts = async () => {
@@ -34,8 +35,8 @@ export function PublicationScreen() {
     };
   
     const fetchData = async () => {
-      await Promise.all([fetchPosts(), fetchUsers()]); // Espera a que ambas peticiones terminen
-      setLoading(false); // Solo desactiva el estado de carga cuando ambas estén listas
+      await Promise.all([fetchPosts(), fetchUsers()]);
+      setLoading(false);
     };
   
     fetchData();
@@ -44,9 +45,10 @@ export function PublicationScreen() {
   const getPostWithUserNames = () => {
     return posts.map((post) => {
       const user = Array.isArray(users)
-      ? users.find((u) => {
-        return String(u.user_id).trim() === String(post.user_id).trim();
-      })
+      // ? users.find((u) => {
+      //   return String(u.user_id).trim() === String(post.user_id).trim();
+      // })
+      ? users.find((u) => String(u.user_id).trim() === String(post.user_id).trim())
     : null;
       return {
         ...post,
@@ -59,7 +61,6 @@ export function PublicationScreen() {
 const getDaysAgo = (createdAt) => {
   const currentDate = new Date();
   const createdDate = new Date(createdAt);
-
   const diffInTime = currentDate.getTime() - createdDate.getTime();
   const diffInDays = Math.floor(diffInTime / (1000 * 3600 * 24));
 
@@ -71,43 +72,38 @@ const getDaysAgo = (createdAt) => {
     const daysAgo = getDaysAgo(item.createdAt); 
     return (
     <View style={styles.container}>
-      <View style={styles.contHeaderPubli}>
-        <View style={styles.avatarBase}>
-          <Image
-            source={require('../../../assets/avatar.jpeg')}
-            style={styles.avatar}
-          />
-        </View>
-        <View style={styles.texts}>
-          <Text style={styles.title2}>Publicado por</Text>
-          <Text style={styles.title3}>{item.nombre}</Text>
-        </View>
+      <View style={styles.contHeader}>
+        <Image
+          source={require('../../../assets/cabecera_logo_home.png')}
+          style={styles.logo}
+        />
       </View>
 
       <View style={styles.contPubli}>
-        <Image
+        <ImageBackground
           source={{ uri: item.image_url }} 
           style={styles.publicationImage}
-        />
+        >
+        <View style={styles.contHeaderPubli}>
+          <View style={styles.avatarBase}>
+            <Image
+              source={require('../../../assets/avatar.jpeg')}
+              style={styles.avatar}
+            />
+          </View>
+          <View style={styles.texts}>
+            <Text style={styles.title2}>Publicado por</Text>
+            <Text style={styles.title3}>{item.nombre}</Text>
+          </View>
+        </View>
+        </ImageBackground>
       </View>
   
       <View style={styles.body}>
-        <View style={styles.contLike}>
-          <Image
-            source={require('../../../assets/megusta.png')}
-            style={styles.like}
-          />
-          <Text style={styles.titleLike}>{item.likes} Me gusta</Text>
-        </View>
+        <LikeButton item={item} userId={item.user_id} />
         <Text style={styles.title}>{item.titulo}</Text>
         <Text style={styles.titleDescription}>{item.comentario}</Text>
-        <View style={styles.contComments}>
         <Text style={styles.titleTime}>Hace {daysAgo} días</Text>
-          {/* <TouchableOpacity onPress={() => navigation.navigate('Comments', { publication_id: item.id })}> */}
-          <Image source={require('../../../assets/añadir_mensaje.png')} style={styles.addComment} />
-          {/* </TouchableOpacity> */}
-        </View>
-        <Text style={styles.title}>COMENTARIOS</Text>
       </View>
     </View>
   );
@@ -124,9 +120,10 @@ const getDaysAgo = (createdAt) => {
 
   return (
     <FlatList
-      data={getPostWithUserNames()} // Los datos que provienen de la API
-      renderItem={renderItem} // Cómo renderizar cada publicación
-      keyExtractor={(item) => item.id.toString()} // Usamos el id como clave única
+      //Coge los datos, los renderiza y los identifica por id
+      data={getPostWithUserNames()}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id.toString()} 
       showsVerticalScrollIndicator={false} 
     />
   );
@@ -137,14 +134,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.blackish,
   },
+  contHeader: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 10,
+  },
   contHeaderPubli: {
     // flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     width: '100%',
-    marginTop: 40,
-    marginBottom: 10,
-    paddingLeft: 10,
+    marginTop: 10,
+    paddingLeft: 20,
+    gap: 20,
+  },
+  contPubli: {
+    height: 380,
+    width: '100%',
+    // borderBlockColor: theme.colors.green,
+    // borderBottomWidth: 2
+  },
+  return: {
+    height: 30,
+    width: 18,
   },
   title2: {
     color: theme.colors.lightGray,
@@ -170,13 +183,6 @@ const styles = StyleSheet.create({
   },
   texts: {
     flexDirection: 'column',
-    marginLeft: 15,
-  },
-  contPubli: {
-    height: 380,
-    width: '100%',
-    // borderBlockColor: theme.colors.green,
-    // borderBottomWidth: 2
   },
   publicationImage: {
     width: '100%',
@@ -215,10 +221,6 @@ const styles = StyleSheet.create({
     color: theme.colors.lightGray,
     fontSize: 8,
     marginBottom: 20,
-  },
-  contComments: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
   },
   addComment: {
     width: 50,

@@ -87,7 +87,7 @@ export function RegisterScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image
-          source={{ uri: 'https://s3-alpha-sig.figma.com/img/72d7/b319/4b4d43937556f9dedd4e2670fb4a1c44?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=TbzD5fH71Ygw~ry45ZfxYueUUHazW8iwK1vc4zyhggjAMbpvdzkoy8m6UmrJ1g~cOi35bwg~Plr5V9wZWqOyLaFY~TVZXY1Fm7NCxqIt0tZf2Gqgcjx52WxxkQCulWbTENnDByWllb4cufsRRDgnCUV8HoUXMEO1WHMCdgmrm-yZSjtAR2PfJ9ettDSSANkghKOVeOMlRNiTVllDzY3f3E~Bo0eEPfXsbJeYw-OxcJxz6eGKAnhYgVPxoHvTtwvkVuoAdkT79iGs4f-2ZXKvT0bX3uHpbwZdKtoCW2Y6LxO-PYyB4stihhUGFyDHoGBD12zlma8W1KGeB-P3H4rhIA__' }}
+          source={require('../../assets/register.png')}
           style={styles.image}
         />
       </View>
