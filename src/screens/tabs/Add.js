@@ -4,8 +4,10 @@ import { theme } from '../theme';
 import Button from '../components/Button';
 import * as ImagePicker from 'expo-image-picker';
 import Modal from 'react-native-modal';
+import { API_IP, API_PORT } from '@env';
 
 export function Add({ navigation, route }) {
+  const apiURL = `http://${API_IP}:${API_PORT}`;
   const [isModalVisible, setModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const { user_id } = route.params || {};
@@ -102,7 +104,7 @@ const saveToDatabase = async (imageUrl) => {
     comentario:descripcion,
   };
   try {
-    const response = await fetch('http://192.168.1.23:8080/proyecto01/publicaciones', {
+    const response = await fetch(`${apiURL}/proyecto01/publicaciones`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

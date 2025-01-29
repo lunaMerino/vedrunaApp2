@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { theme } from '../theme'
+import { API_IP, API_PORT } from '@env';
+
 export function PublicationScreen() {
   
+  const apiURL = `http://${API_IP}:${API_PORT}`;
   const [ posts, setPosts ] = useState([]); // Para almacenar las publicaciones
   const [ users, setUsers ] = useState([]);
   const [ loading, setLoading ] = useState(true); // Para manejar el estado de carga
@@ -11,7 +14,7 @@ export function PublicationScreen() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await fetch('http://192.168.1.23:8080/proyecto01/publicaciones');
+        const response = await fetch(`${apiURL}/proyecto01/publicaciones`);
         const data = await response.json();
         setPosts(data);
       } catch (error) {
@@ -21,7 +24,7 @@ export function PublicationScreen() {
   
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://192.168.1.23:8080/proyecto01/users/name');
+        const response = await fetch(`${apiURL}/proyecto01/users/name`);
         const data = await response.json();
         
         setUsers(data);
@@ -97,7 +100,7 @@ const getDaysAgo = (createdAt) => {
           <Text style={styles.titleLike}>{item.likes} Me gusta</Text>
         </View>
         <Text style={styles.title}>{item.titulo}</Text>
-        <Text style={styles.titleDescription}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur faucibus rutrum libero, a bibendum enim posuere sit amet. Proin lorem lorem, mollis tincidunt tincidunt in.</Text>
+        <Text style={styles.titleDescription}>{item.comentario}</Text>
         <View style={styles.contComments}>
         <Text style={styles.titleTime}>Hace {daysAgo} días</Text>
           {/* <TouchableOpacity onPress={() => navigation.navigate('Comments', { publication_id: item.id })}> */}

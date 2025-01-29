@@ -4,6 +4,7 @@ import { theme } from './theme';
 import { auth } from './utils/Firebase';
 import Button from './components/Button';
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import { API_IP, API_PORT } from '@env';
 
 export function RegisterScreen({ navigation }) {
   const [form, setForm] = useState({
@@ -51,8 +52,8 @@ export function RegisterScreen({ navigation }) {
       // navigation.navigate('Add', { user_id: firebaseUID }); 
 
       console.log('Datos enviados al backend:', newUser);
-
-       return fetch('http://192.168.1.23:8080/proyecto01/users', {
+      const apiURL = `http://${API_IP}:${API_PORT}`;
+       return fetch(`${apiURL}/proyecto01/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

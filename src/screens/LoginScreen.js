@@ -5,8 +5,8 @@ import { auth } from './utils/Firebase.js';
 import { signInWithEmailAndPassword } from "firebase/auth";
 export function LoginScreen({ navigation }) {
   
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('usuario23@gmail.com');
+  const [password, setPassword] = useState('usuario23');
 
 
   const handleLogin = () => {
