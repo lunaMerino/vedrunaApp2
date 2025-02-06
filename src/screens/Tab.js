@@ -1,11 +1,9 @@
-import { View, Text } from 'react-native'
 import React from 'react'
 import { TabNavigation } from './navegation/TabNavigation'
 
-export function Tab({navigation}) {
+export function Tab({route }) {
+  const { user_id } = route.params || {};
   return (
-    <View>
-      <TabNavigation />
-    </View>
+    <TabNavigation route={{ params: { user_id } }} />
   )
 }

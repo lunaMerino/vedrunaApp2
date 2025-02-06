@@ -1,11 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { HomeScreen, SettingsScreen } from "../tabs/index";
+import { PublicationScreen, Add } from "../tabs/index";
 import React from "react";
 import { theme } from "../theme";
 
-export function TabNavigation() {
+export function TabNavigation({ route }) {
   const Tab = createBottomTabNavigator();
+
+  const { params } = route;
+  const user_id = params?.user_id;
   return (
     <Tab.Navigator
       screenOptions={{
@@ -13,13 +16,13 @@ export function TabNavigation() {
         tabBarStyle: { backgroundColor: theme.colors.blackish,
           borderTopWidth: 0
         },
-        tabBarActiveTintColor: "#ffffff",
-        tabBarInactiveTintColor: "#aaa",
+        tabBarActiveTintColor: theme.colors.green,
+        tabBarInactiveTintColor: theme.colors.lightGray,
       }}
     >
       <Tab.Screen
         name="Publicaciones"
-        component={ HomeScreen }
+        component={ PublicationScreen }
 
         options={{
           tabBarIcon: ({ color, size }) => (
@@ -28,12 +31,12 @@ export function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="Ajustes"
-        component={ SettingsScreen }
-
+        name="Añadir"
+        component={ Add }
+        initialParams={{ user_id }}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings" color={color} size={size} />
+            <Ionicons name="add-circle" color={color} size={size} />
           ),
         }}
       />
