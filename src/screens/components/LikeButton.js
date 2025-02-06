@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
+import { Text, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { theme } from "../theme";
 import { API_IP, API_PORT } from "@env";
 
@@ -7,27 +7,27 @@ const apiURL = `http://${API_IP}:${API_PORT}`;
 
 const LikeButton = ({ item, userId }) => {
   const [liked, setLiked] = useState(false); // Estado para saber si el usuario ya dio like
-  const [likesCount, setLikesCount] = useState(item.like ? item.like.length : 0); // Contador de likes, asegurándose que `item.like` existe
-  const [loading, setLoading] = useState(false); // Estado de carga mientras se actualizan los likes
-
+  const [likesCount, setLikesCount] = useState(Array.isArray(item.like) ? item.like.length : 0); // Contador de likes, asegurándonos de que `item.like` sea un array
+  const [loading, setLoading] = useState(false); 
+  
   // Verificar si el usuario ya ha dado like
   useEffect(() => {
     const checkIfLiked = () => {
-      if (!item || !item.like) {
-        console.error("El item no contiene la propiedad 'like'.");
+      if (!item || !Array.isArray(item.like)) {
+        console.error("El item no contiene la propiedad 'like' o no es un array.");
         return;
       }
-  
+
       if (!userId) {
         console.error("userId no válido");
-        return; // No hacer nada si userId es inválido
+        return;
       }
-  
+
       const isLiked = item.like.includes(userId);
       setLiked(isLiked);
     };
-  
-    checkIfLiked(); // Realizar la comprobación solo una vez cuando el componente se renderiza
+
+    checkIfLiked();
   }, [item, userId]);
 
   // Manejar el like
@@ -40,28 +40,37 @@ const LikeButton = ({ item, userId }) => {
         throw new Error("Faltan datos necesarios para realizar la solicitud.");
       }
 
-      const likeUrl = `${apiURL}/put/${item.id}/${userId}`;
-      console.log("Haciendo solicitud PUT a:", likeUrl); // Verificamos la URL
+      // Crear el objeto de la publicación con el userId en el array de likes
+      const updatedItem = {
+        ...item,
+        like: item.like.includes(userId) ? item.like : [...item.like, userId], // Aseguramos que no se duplique el userId
+      };
 
-      // Realizar la petición para dar like o quitarlo
+
+      const likeUrl = `${apiURL}/put/${item.id}`;
+
+      // Realizar la solicitud PUT para actualizar la publicación
       const response = await fetch(likeUrl, {
         method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedItem),
       });
-
-      Alert.alert("Respuesta del servidor:", response); // Verificamos la respuesta
 
       if (!response.ok) {
         const responseText = await response.text();
-        console.error("Error al dar like:", responseText); // Mostramos el mensaje de error del backend
+        console.error("Error al dar like:", responseText);
         throw new Error("Error al dar like: " + response.statusText);
       }
 
-      // Alternar el estado de "liked" y actualizar el número de likes
-      setLiked((prevLiked) => {
-        const newLikeStatus = !prevLiked;
-        setLikesCount((prevLikesCount) => prevLikesCount + (newLikeStatus ? 1 : -1));
-        return newLikeStatus;
-      });
+      // Obtener la publicación actualizada desde el servidor
+      const newPost = await response.json();
+
+      // Actualizar y verificar si el id esta en el array de lkes
+      setLiked(newPost.like.includes(userId));
+      setLikesCount(newPost.like.length);
+
     } catch (error) {
       console.error("Error al dar like:", error);
       Alert.alert("Error", "Hubo un problema al actualizar tu like. Intenta nuevamente.");
@@ -74,13 +83,15 @@ const LikeButton = ({ item, userId }) => {
     <TouchableOpacity
       style={styles.contLike}
       onPress={handleLike}
-      disabled={loading} // Deshabilitar el botón mientras está en proceso de actualización
+      disabled={loading}
     >
       <Image
         source={require("../../../assets/megusta.png")}
         style={[styles.like, { tintColor: liked ? theme.colors.green : theme.colors.lightGray }]}
       />
-      <Text style={styles.titleLike}>{likesCount} Me gusta</Text>
+      <Text style={styles.titleLike}>
+        {likesCount > 0 ? `${likesCount} Me gusta` : 'Sé el primero en dar like'}
+      </Text>
     </TouchableOpacity>
   );
 };
