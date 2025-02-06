@@ -1,17 +1,19 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { useRoute } from '@react-navigation/native';
+import { theme } from '../theme'
+import { API_IP, API_PORT } from '@env';
 
-export function StackA() {
+export function Publi() {
+  const apiURL = `http://${API_IP}:${API_PORT}`;
   return (
     <View>
-      <Text>StackA</Text>
+      <Text>StackB</Text>
     </View>
   )
 }
 
-// import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
-// import React, { useState, useEffect } from 'react'
-// import { theme } from '../theme'
-// import { API_IP, API_PORT } from '@env';
+
 
 // export function PublicationScreen() {
   

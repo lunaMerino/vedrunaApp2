@@ -4,8 +4,8 @@ import { theme } from '../theme'
 import { API_IP, API_PORT } from '@env';
 import LikeButton from '../components/LikeButton';
 
-export function PublicationScreen() {
-  
+export function FlatListPubli({ navigation }) {
+
   const apiURL = `http://${API_IP}:${API_PORT}`;
   const [ posts, setPosts ] = useState([]); // Para almacenar las publicaciones
   const [ users, setUsers ] = useState([]);
@@ -44,12 +44,7 @@ export function PublicationScreen() {
 
   const getPostWithUserNames = () => {
     return posts.map((post) => {
-      const user = Array.isArray(users)
-      // ? users.find((u) => {
-      //   return String(u.user_id).trim() === String(post.user_id).trim();
-      // })
-      ? users.find((u) => String(u.user_id).trim() === String(post.user_id).trim())
-    : null;
+      const user = users.find((u) => String(u.user_id).trim() === String(post.user_id).trim());
       return {
         ...post,
         nombre: user ? user.nombre : 'Usuario desconocido',
@@ -71,7 +66,10 @@ const getDaysAgo = (createdAt) => {
   const renderItem = ({ item }) => {
     const daysAgo = getDaysAgo(item.createdAt); 
     return (
-    <View style={styles.container}>
+      <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate('Publi', { postId: item.id })}
+    >
       <View style={styles.contHeader}>
         <Image
           source={require('../../../assets/cabecera_logo_home.png')}
@@ -81,31 +79,31 @@ const getDaysAgo = (createdAt) => {
 
       <View style={styles.contPubli}>
         <ImageBackground
-          source={{ uri: item.image_url }} 
+          source={{ uri: item.image_url }}
           style={styles.publicationImage}
         >
-        <View style={styles.contHeaderPubli}>
-          <View style={styles.avatarBase}>
-            <Image
-              source={require('../../../assets/avatar.jpeg')}
-              style={styles.avatar}
-            />
+          <View style={styles.contHeaderPubli}>
+            <View style={styles.avatarBase}>
+              <Image
+                source={require('../../../assets/avatar.jpeg')}
+                style={styles.avatar}
+              />
+            </View>
+            <View style={styles.texts}>
+              <Text style={styles.title2}>Publicado por</Text>
+              <Text style={styles.title3}>{item.nombre}</Text>
+            </View>
           </View>
-          <View style={styles.texts}>
-            <Text style={styles.title2}>Publicado por</Text>
-            <Text style={styles.title3}>{item.nombre}</Text>
-          </View>
-        </View>
         </ImageBackground>
       </View>
-  
+
       <View style={styles.body}>
         <LikeButton item={item} userId={item.user_id} />
         <Text style={styles.title}>{item.titulo}</Text>
         <Text style={styles.titleDescription}>{item.comentario}</Text>
         <Text style={styles.titleTime}>Hace {daysAgo} días</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -124,7 +122,7 @@ const getDaysAgo = (createdAt) => {
       data={getPostWithUserNames()}
       renderItem={renderItem}
       keyExtractor={(item) => item.id.toString()} 
-      showsVerticalScrollIndicator={false} 
+      showsVerticalScrollIndicator={false}
     />
   );
 }

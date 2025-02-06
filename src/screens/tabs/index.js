@@ -1,2 +1,2 @@
-export { PublicationScreen } from "./PublicationScreen";
+export { Publications } from "./Publications";
 export { Add } from "./Add";

@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { PublicationScreen, Add } from "../tabs/index";
+import { Publications, Add } from "../tabs/index";
 import React from "react";
 import { theme } from "../theme";
 
@@ -22,7 +22,7 @@ export function TabNavigation({ route }) {
     >
       <Tab.Screen
         name="Publicaciones"
-        component={ PublicationScreen }
+        component={ Publications }
 
         options={{
           tabBarIcon: ({ color, size }) => (

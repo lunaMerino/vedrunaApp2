@@ -1,2 +1,2 @@
-export { StackA } from "./StackA"
-export { StackB } from "./StackB"
+export { FlatListPubli } from "./FlatListPubli"
+export { Publi } from "./Publi"
