@@ -53,8 +53,8 @@ export function RegisterScreen({ navigation }) {
 
       console.log('Datos enviados al backend:', newUser);
       const apiURL = `http://${API_IP}:${API_PORT}`;
-       return fetch(`${apiURL}/proyecto01/users`, {
-        // return fetch(`http://10.0.2.2:8080/proyecto01/users`, {
+      //  return fetch(`${apiURL}/proyecto01/users`, {
+        return fetch(`http://10.0.2.2:8080/proyecto01/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

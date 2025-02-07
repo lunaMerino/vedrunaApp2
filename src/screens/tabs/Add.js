@@ -104,8 +104,8 @@ const saveToDatabase = async (imageUrl) => {
     comentario:descripcion,
   };
   try {
-    const response = await fetch(`${apiURL}/proyecto01/publicaciones`, {
-    // const response = await fetch(`http:10.0.2.2:8080/proyecto01/publicaciones`, {
+    // const response = await fetch(`${apiURL}/proyecto01/publicaciones`, {
+    const response = await fetch(`http:10.0.2.2:8080/proyecto01/publicaciones`, {
 
       method: 'POST',
       headers: {
