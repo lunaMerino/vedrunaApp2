@@ -90,7 +90,7 @@ const LikeButton = ({ item, userId }) => {
         style={[styles.like, { tintColor: liked ? theme.colors.green : theme.colors.lightGray }]}
       />
       <Text style={styles.titleLike}>
-        {likesCount > 0 ? `${likesCount} Me gusta` : 'Sé el primero en dar like'}
+        {likesCount > 0 ? `${likesCount} Me gusta` : 'Me gusta'}
       </Text>
     </TouchableOpacity>
   );
