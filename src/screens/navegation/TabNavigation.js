@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { Publications, Add } from "../tabs/index";
+import { Publications, Add, Incidencias, Profile } from "../tabs/index";
 import React from "react";
 import { theme } from "../theme";
+import { Image } from "react-native";
 
 export function TabNavigation({ route }) {
   const Tab = createBottomTabNavigator();
@@ -17,7 +18,7 @@ export function TabNavigation({ route }) {
           borderTopWidth: 0
         },
         tabBarActiveTintColor: theme.colors.green,
-        tabBarInactiveTintColor: theme.colors.lightGray,
+        tabBarInactiveTintColor: theme.colors.darkGray,
       }}
     >
       <Tab.Screen
@@ -38,6 +39,32 @@ export function TabNavigation({ route }) {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="add-circle" color={color} size={size} />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="Incidencias"
+        component={ Incidencias }
+
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="settings" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Perfil"
+        component={ Profile }
+
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Image
+                source={
+                  focused
+                    ? require("../../../assets/profile2.png")
+                    : require("../../../assets/profile.png")
+                }
+                style={{ width: 22, height: 22 }}
+              />          ),
         }}
       />
     </Tab.Navigator>

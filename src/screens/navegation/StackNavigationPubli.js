@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { FlatListPubli, Publi } from "../Stacks/index";
+import { FlatListPubli, Publi } from "../StacksPublications/index";
 
 export function StackNavigationPubli() {
     const Stack = createStackNavigator();
