@@ -16,6 +16,7 @@ export function FlatListPubli({ navigation }) {
     const fetchPosts = async () => {
       try {
         const response = await fetch(`${apiURL}/proyecto01/publicaciones`);
+        // const response = await fetch(`http://10.0.2.2:8080/proyecto01/publicaciones`);
         const data = await response.json();
         setPosts(data);
       } catch (error) {
@@ -26,6 +27,7 @@ export function FlatListPubli({ navigation }) {
     const fetchUsers = async () => {
       try {
         const response = await fetch(`${apiURL}/proyecto01/users/name`);
+        // const response = await fetch(`http://10.0.2.2:8080/proyecto01/users/name`);
         const data = await response.json();
         
         setUsers(data);
@@ -68,7 +70,7 @@ const getDaysAgo = (createdAt) => {
     return (
       <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate('Publi', { postId: item.id })}
+      onPress={() => navigation.navigate('Publi', { post: item })}
     >
       <View style={styles.contHeader}>
         <Image

@@ -2,16 +2,195 @@ import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator, TouchableOp
 import React, { useState, useEffect } from 'react'
 import { useRoute } from '@react-navigation/native';
 import { theme } from '../theme'
-import { API_IP, API_PORT } from '@env';
+import LikeButton from '../components/LikeButton';
 
 export function Publi() {
-  const apiURL = `http://${API_IP}:${API_PORT}`;
+
   return (
     <View>
       <Text>StackB</Text>
     </View>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { View, Text, StyleSheet, Image, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
+// import React, { useState, useEffect } from 'react'
+// import { useRoute } from '@react-navigation/native';
+// import { theme } from '../theme'
+// import LikeButton from '../components/LikeButton';
+
+// export function Publi({ navigation }) {
+//   const route = useRoute();
+//   const { post } = route.params;
+//   return (
+//     <View style={styles.container}>
+//       <View style={styles.contHeaderPubli}>
+//         <TouchableOpacity onPress={() => navigation.goBack()}>
+//           <Image source={require('../../../assets/volver_atras.png')} style={styles.return} />
+//         </TouchableOpacity>
+//         <View style={styles.avatarBase}>
+//           <Image
+//             source={require('../../../assets/avatar.jpeg')}
+//             style={styles.avatar}
+//           />
+//         </View>
+//         <View style={styles.texts}>
+//           <Text style={styles.title2}>Publicado por</Text>
+//           <Text style={styles.title3}>{post.nombre}</Text>  {/* Aquí usamos post.nombre */}
+//         </View>
+//       </View>
+
+//       <View style={styles.contPubli}>
+//         <Image
+//           source={{ uri: post.image_url }}  {/* Usamos la URL de la imagen del post */}
+//           style={styles.publicationImage}
+//         />
+//       </View>
+
+//       <View style={styles.body}>
+//         <LikeButton item={post} />  {/* Usamos el post completo aquí para el LikeButton */}
+//         <Text style={styles.title}>{post.titulo}</Text>  {/* Usamos post.titulo */}
+//         <Text style={styles.titleDescription}>{post.comentario}</Text>  {/* Usamos post.comentario */}
+//         <View style={styles.contComments}>
+//           <Text style={styles.titleTime}>Hace {daysAgo} días</Text>  {/* Muestra los días pasados desde la publicación */}
+//           <TouchableOpacity onPress={() => navigation.navigate('Comments', { publication_id: post.id })}>
+//             <Image source={require('../../../assets/añadir_mensaje.png')} style={styles.addComment} />
+//           </TouchableOpacity>
+//         </View>
+//         <Text style={styles.title}>COMENTARIOS</Text>
+//       </View>
+//     </View>
+//   );
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     backgroundColor: '#fff',  // Asegúrate de que el fondo sea blanco o el que desees
+//   },
+//   contHeaderPubli: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     padding: 15,
+//     backgroundColor: theme.colors.green,  // Si usas un color de tu tema
+//   },
+//   return: {
+//     width: 30,
+//     height: 30,
+//   },
+//   avatarBase: {
+//     width: 50,
+//     height: 50,
+//     backgroundColor: theme.colors.green,
+//     borderRadius: 50,
+//     alignItems: 'center',
+//     justifyContent: 'center',
+//     marginLeft: 20,
+//   },
+//   avatar: {
+//     width: 45,
+//     height: 45,
+//     borderRadius: 50,
+//   },
+//   texts: {
+//     marginLeft: 10,
+//   },
+//   title2: {
+//     color: theme.colors.lightGray,
+//     fontSize: 10,
+//   },
+//   title3: {
+//     color: theme.colors.lightGray,
+//     fontSize: 14,
+//     fontWeight: 'bold',
+//   },
+//   contPubli: {
+//     marginTop: 20,
+//     marginBottom: 20,
+//   },
+//   publicationImage: {
+//     width: '100%',
+//     height: 300,  // Ajusta el tamaño de la imagen según sea necesario
+//     borderRadius: 10,
+//   },
+//   body: {
+//     paddingHorizontal: 20,
+//   },
+//   title: {
+//     color: theme.colors.green,
+//     fontSize: 18,
+//     fontWeight: 'bold',
+//     marginVertical: 10,
+//   },
+//   titleDescription: {
+//     color: theme.colors.lightGray,
+//     fontSize: 14,
+//     marginBottom: 10,
+//   },
+//   contComments: {
+//     flexDirection: 'row',
+//     alignItems: 'center',
+//     marginTop: 20,
+//   },
+//   titleTime: {
+//     color: theme.colors.lightGray,
+//     fontSize: 10,
+//     marginRight: 10,
+//   },
+//   addComment: {
+//     width: 30,
+//     height: 30,
+//   },
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
