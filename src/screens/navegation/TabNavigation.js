@@ -44,7 +44,7 @@ export function TabNavigation({ route }) {
       <Tab.Screen
         name="Incidencias"
         component={ Incidencias }
-
+        initialParams={{ user_id }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings" color={color} size={size} />
@@ -54,7 +54,7 @@ export function TabNavigation({ route }) {
       <Tab.Screen
         name="Perfil"
         component={ Profile }
-
+        initialParams={{ user_id }}
         options={{
           tabBarIcon: ({ focused }) => (
             <Image
