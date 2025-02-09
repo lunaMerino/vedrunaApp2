@@ -1,12 +1,15 @@
-import { View, Text, StyleSheet, Image, ImageBackground, Ionicons,FlatList, ActivityIndicator, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, ImageBackground, Modal, TouchableOpacity } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useRoute } from '@react-navigation/native';
 import { theme } from '../theme'
 import LikeButton from '../components/LikeButton';
 import { API_IP, API_PORT } from '@env';
+import ComentariosModal from '../components/ComentariosModal'; // Importa el componente
+import { FlatList } from 'react-native-gesture-handler';
 
 
-export function Publi({ route, navigation }) {
+
+export function Publi({ route }) {
   const apiURL = `http://${API_IP}:${API_PORT}`;
 
   const { post } = route.params; // Datos de la publicación
@@ -16,52 +19,64 @@ export function Publi({ route, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
 
 
+      // Obtener los comentarios al cargar el componente
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        // const response = await fetch(`${apiURL}/proyecto01/comments/${post.id}`);
-        const response = await fetch(`http://10.0.2.2:8080/proyecto01/comments/${post.id}`);
+        // const response = await fetch(`${apiURL}/proyecto01/comentarios/${post.id}`);
+        const response = await fetch(`http://localhost:8080/proyecto01/comentarios/${post.id}`);
+        if (!response.ok) {
+          throw new Error(`Error al obtener comentarios: ${response.status}`);
+        }
         const data = await response.json();
-        setComments(data); // Usa un estado para almacenar los comentarios
+        setComments(data);
       } catch (error) {
-        console.error('Error al obtener los comentarios:', error);
+        console.error(error.message);
+        alert('Hubo un problema al cargar los comentarios.');
+      } finally {
+        setLoading(false);
       }
     };
-  
+
     fetchComments();
   }, [post.id]);
 
-  const handleAddComment = async () => {
+
+   // Manejar el añadir un nuevo comentario
+   const handleAddComment = async () => {
     if (!newComment.trim()) {
       alert('Por favor, escribe un comentario.');
       return;
     }
 
     const commentData = {
-      user_id: post.user_id, // ID del usuario actual (modifícalo según tu lógica)
+      user_id: post.user_id, // Cambia esto si tienes el ID del usuario actual almacenado
       idPublicacion: post.id,
       comentario: newComment,
     };
 
     try {
-      const response = await fetch(`${API_URL}/put`, {
+      const response = await fetch(`http://localhost:8080/proyecto01/comentarios/put`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commentData),
       });
 
-      if (response.ok) {
-        const savedComment = await response.json();
-        setComments((prev) => [...prev, savedComment]); // Actualiza la lista de comentarios
-        setNewComment('');
-        setModalVisible(false); // Cierra el modal
-      } else {
-        console.error('Error al agregar el comentario:', response.status);
+      if (!response.ok) {
+        throw new Error(`Error al guardar el comentario: ${response.status}`);
       }
+
+      const savedComment = await response.json();
+      setComments((prev) => [...prev, savedComment]); // Actualiza la lista de comentarios
+      setNewComment('');
+      setModalVisible(false); // Cierra el modal
     } catch (error) {
-      console.error('Error:', error);
+      console.error(error.message);
+      alert('Hubo un problema al guardar el comentario. Inténtalo de nuevo.');
     }
   };
+
+
 
   if (loading) {
     return (
@@ -106,6 +121,9 @@ export function Publi({ route, navigation }) {
   };
 
 
+
+
+
   const daysAgo = getDaysAgo(post.createdAt); 
 
   return (
@@ -137,8 +155,37 @@ export function Publi({ route, navigation }) {
         <Text style={styles.titleTime}> {daysAgo} </Text>
       </View>
 
+      <View style={styles.botonAñadir}>
+        <TouchableOpacity 
+          style={styles.botonAddComentario}
+          onPress={() => setModalVisible(true)}
+        >
+          <Image
+            source={require('../../../assets/addComentario.png')}
+            style={styles.imgAdd}
+          />
+           {/* Componente del Modal */}
+          <ComentariosModal
+            visible={modalVisible}
+            onClose={() => setModalVisible(false)}
+            onSubmit={handleAddComment}
+          />
+        </TouchableOpacity>
+      </View>
+
       <View style={styles.seccionComentarios}>
         <Text style={styles.comentario}>COMENTARIOS</Text>
+        <FlatList
+          data={comments}
+          keyExtractor={(item) => item.id}
+          ListEmptyComponent={<Text style={styles.noComments}>No hay comentarios.</Text>}
+          renderItem={({ item }) => (
+            <View>
+              <Text style={styles.username}>{item.nombre}</Text>
+              <Text style={styles.commentText}>{item.comentario}</Text>
+            </View>
+          )}
+        />
       </View>
 
     </View>
@@ -289,6 +336,28 @@ const styles = StyleSheet.create({
 
   titleLike: {
     color: theme.colors.lightGray,
+  },
+
+
+  // boton añadir comentario
+  botonAñadir: {
+    alignItems: 'flex-end',
+    marginVertical: '-40',
+    marginHorizontal: 30
+  },
+
+  botonAddComentario: {
+    backgroundColor: '#9FC63B',
+    height: 63,
+    width: 63,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 40
+  },
+
+  imgAdd: {
+    width: 31,
+    height: 31
   },
   
 });
