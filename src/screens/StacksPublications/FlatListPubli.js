@@ -56,34 +56,34 @@ export function FlatListPubli({ navigation }) {
   
   //Calcular días desde la publicación
   const getDaysAgo = (createdAt) => {
-      if (!createdAt) return "Fecha desconocida";
-    
-      let createdDate = new Date(createdAt);
-      if (isNaN(createdDate.getTime())) return "Fecha inválida";
-    
-      const currentDate = new Date();
-    
-      console.log("🔵 createdAt recibido:", createdAt);
-      console.log("🟢 createdDate (convertido):", createdDate);
-      console.log("🟡 currentDate (ahora):", currentDate);
-    
-      let diffInTime = currentDate - createdDate; // Diferencia en milisegundos
-      console.log("🔴 Diferencia en ms:", diffInTime);
-    
-      // Evitar números negativos
-      if (diffInTime < 0) return "Hace 0 segundos";
-    
-      const diffInSeconds = Math.floor(diffInTime / 1000);
-      console.log("🟣 Diferencia en segundos:", diffInSeconds);
-    
-      if (diffInSeconds < 60) return `Hace ${diffInSeconds} segundos`;
-      const diffInMinutes = Math.floor(diffInSeconds / 60);
-      if (diffInMinutes < 60) return `Hace ${diffInMinutes} minutos`;
-      const diffInHours = Math.floor(diffInMinutes / 60);
-      if (diffInHours < 24) return `Hace ${diffInHours} horas`;
-      const diffInDays = Math.floor(diffInHours / 24);
-      return `Hace ${diffInDays} días`;
-    };
+    if (!createdAt) return "Fecha desconocida";
+  
+    let createdDate = new Date(createdAt);
+    if (isNaN(createdDate.getTime())) return "Fecha inválida";
+  
+    const currentDate = new Date();
+  
+    // console.log("🔵 createdAt recibido:", createdAt);
+    // console.log("🟢 createdDate (convertido):", createdDate);
+    // console.log("🟡 currentDate (ahora):", currentDate);
+  
+    let diffInTime = currentDate - createdDate; // Diferencia en milisegundos
+    // console.log("🔴 Diferencia en ms:", diffInTime);
+  
+    // Evitar números negativos
+    if (diffInTime < 0) return "Hace 0 segundos";
+  
+    const diffInSeconds = Math.floor(diffInTime / 1000);
+    // console.log("🟣 Diferencia en segundos:", diffInSeconds);
+  
+    if (diffInSeconds < 60) return `Hace ${diffInSeconds} segundos`;
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) return `Hace ${diffInMinutes} minutos`;
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `Hace ${diffInHours} horas`;
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `Hace ${diffInDays} días`;
+  };
     
     
     
@@ -99,10 +99,7 @@ export function FlatListPubli({ navigation }) {
 
     return (
       <View style={styles.todo}>
-      <TouchableOpacity
-        style={styles.container}
-        onPress={() => navigation.navigate('Publi', { post: item })}
-      >
+     
       
       <View style={styles.contPubli}>
         <ImageBackground
@@ -129,8 +126,18 @@ export function FlatListPubli({ navigation }) {
         <LikeButton item={item} userId={item.user_id} />
         <Text style={styles.title}>{item.titulo}</Text>
         <Text style={styles.titleDescription}>{item.comentario}</Text>
-      </View>
+
+        <TouchableOpacity
+        onPress={() => navigation.navigate('Publi', { post: item })}
+      >
+        <Text
+          style={styles.comentario}
+        >
+          Comentarios
+        </Text>
     </TouchableOpacity>
+      </View>
+      
     </View>
   );
 };
@@ -232,7 +239,8 @@ const styles = StyleSheet.create({
 
   texts: {
     flexDirection: 'column',
-    marginTop: 10
+    marginTop: 10,
+    color: '#ffff'
   },
 
   publicationImage: {
@@ -287,6 +295,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+
+  comentario: {
+    color: '#868686',
+    marginTop: 10
   },
   
 });
