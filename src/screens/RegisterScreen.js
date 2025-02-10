@@ -66,7 +66,6 @@ export function RegisterScreen({ navigation }) {
           return response.json().then((data) => {
             console.log('Respuesta del servidor (body):', data); // Log para ver el contenido de la respuesta
             if (response.ok) {
-              Alert.alert('Registro exitoso', 'Usuario creado correctamente');
               navigation.navigate('Login');
             } else {
               throw new Error(data.message || 'Error al registrar en la base de datos');
