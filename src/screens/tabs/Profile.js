@@ -23,7 +23,7 @@ export function Profile({ route }) {
   useEffect(() => {
     const fetchPublicaciones = async () => {
       try {
-        const response = await fetch('http://192.168.1.23:8080/proyecto01/publicaciones');
+        const response = await fetch('http://192.22.1.234:8080/proyecto01/publicaciones');
         const data = await response.json();
 
         // Filtrar publicaciones del usuario
@@ -130,17 +130,55 @@ const renderScene = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
-container: { flex: 1, backgroundColor: theme.colors.blackish },
-header: { height: '35%', backgroundColor: theme.colors.blackish },
-header1: { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', gap: 18, marginTop: 40 },
-avatarBase: { width: 75, height: 75, backgroundColor: theme.colors.green, borderRadius: 50, alignItems: 'center', justifyContent: 'center' },
-avatar: { width: 70, height: 70, borderRadius: 50 },
-textContainer: { alignItems: 'center', justifyContent: 'center' },
-textHeader1: { fontSize: 12, fontWeight: 'bold', color: theme.colors.lightGray },
-textHeader2: { fontSize: 10, color: theme.colors.lightGray },
-header2: { alignItems: 'center', marginTop: 10 },
-infoUser: { alignItems: 'center' },
-username: { fontSize: 14, color: theme.colors.green },
+container: { 
+  flex: 1, 
+  backgroundColor: theme.colors.blackish 
+},
+header: { 
+  height: '30%', 
+  backgroundColor: theme.colors.blackish 
+},
+header1: { 
+  flexDirection: 'row', 
+  justifyContent: 'center', 
+  alignItems: 'center', 
+  gap: 18, 
+  marginTop: 40 },
+avatarBase: { width: 75, 
+  height: 75, 
+  backgroundColor: theme.colors.green, 
+  borderRadius: 50, 
+  alignItems: 'center', 
+  justifyContent: 'center' 
+},
+avatar: { width: 70, 
+  height: 70, 
+  borderRadius: 50 
+},
+textContainer: { 
+  alignItems: 'center', 
+  justifyContent: 'center' 
+},
+textHeader1: { 
+  fontSize: 12, 
+  fontWeight: 'bold', 
+  color: theme.colors.lightGray 
+},
+textHeader2: { 
+  fontSize: 10, 
+  color: theme.colors.lightGray 
+},
+header2: { 
+  marginTop: 20,
+  marginLeft:40,
+},
+infoUser: { 
+
+},
+username: { 
+  fontSize: 14, 
+  color: theme.colors.green 
+},
 email: { fontSize: 12, color: theme.colors.lightGray, textDecorationLine: 'underline' },
 tabLabel: { fontSize: 14, textTransform: 'capitalize' },
 activeTab: { color: theme.colors.green, fontWeight: 'bold' },
@@ -152,13 +190,14 @@ postContainer: {
   gap: 10,
   alignItems: 'center',
   width: 105, 
-  height: 100, 
-  backgroundColor: theme.colors.green
+  height: 115, 
 },
 postImage: { 
-  width: 105, 
-  height: 100, 
-  borderRadius: 1,
+  width: '100%', 
+  height: '100%',
+  borderRadius: 2,
+  borderWidth: 1,
+  borderColor: theme.colors.lightGray,
 },
 tabLabelContainer: {
   flexDirection: 'row',
