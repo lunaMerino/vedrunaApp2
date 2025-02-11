@@ -2,41 +2,47 @@ import { Alert, View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Dimen
 import React, { useState, useEffect } from 'react'
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view'
 import { theme } from '../theme'
-
+import { API_IP, API_PORT } from '@env';
 // npm install react-native-tab-view
 // npm install react-native-pager-view
 
 
 
 export function Profile({ route }) {
+  const apiURL = `http://${API_IP}:${API_PORT}`;
+  
   const { user_id } = route.params || {};
   const [index, setIndex] = useState(0);
   const [routes] = useState([
-    { key: 'posts', title: 'Publicaciones', image: '../../../assets/grid.png' },
-    { key: 'likes', title: 'Me gusta', image: '../../../assets/heartFull.png' },
+    { key: 'posts', title: 'Publicaciones', image: require('../../../assets/grid.png') },
+    { key: 'likes', title: 'Me gusta', image: require('../../../assets/heartFull.png') },
   ]);
   // Alert.alert('routes', JSON.stringify(routes));
   const [posts, setPosts] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-
+  const [loadingPosts, setLoadingPosts] = useState(true);
+const [loadingLikes, setLoadingLikes] = useState(true);
   useEffect(() => {
+
     const fetchPublicaciones = async () => {
       try {
-        const response = await fetch('http://192.22.1.234:8080/proyecto01/publicaciones');
+        // const response = await fetch('http://192.168.1.23:8080/proyecto01/publicaciones');
+        const response = await fetch(`${apiURL}/proyecto01/publicaciones`);
         const data = await response.json();
-
         // Filtrar publicaciones del usuario
         const userPosts = data.filter(post => post.user_id === user_id);
         setPosts(userPosts);
+        setLoadingPosts(false);
 
         // Filtrar publicaciones donde el usuario ha dado "me gusta"
         const userLikedPosts = data.filter(post => post.like.includes(user_id));
         setLikedPosts(userLikedPosts);
+        setLoadingLikes(false);
       } catch (error) {
         console.error('Error al obtener publicaciones:', error);
       } finally {
-        setLoading(false);
+        setLoadingPosts(false);
+        setLoadingLikes(false);
       }
     };
 
@@ -44,31 +50,43 @@ export function Profile({ route }) {
   }, [user_id]);
 
   const renderItem = ({ item }) => (
+    
     <View style={styles.postContainer}>
       <Image source={{ uri: item.image_url }} style={styles.postImage} />
     </View>
   );
 
   const renderPosts = () => (
-    loading ? <ActivityIndicator size="large" color={theme.colors.green} /> :
-    <FlatList data={posts} keyExtractor={item => item.id} renderItem={renderItem} numColumns={3} />
+    <View key="posts">
+    {loadingPosts ? (
+      <ActivityIndicator size="large" color={theme.colors.green} />
+    ) : (
+      <FlatList data={posts} keyExtractor={item => item.id} renderItem={renderItem} numColumns={3} />
+    )}
+  </View>
   );
 
   const renderLikes = () => (
-    loading ? <ActivityIndicator size="large" color={theme.colors.green} /> :
-    <FlatList data={likedPosts} keyExtractor={item => item.id} renderItem={renderItem} numColumns={3} />
+    <View key="likes">
+      {loadingLikes ? (
+        <ActivityIndicator size="large" color={theme.colors.green} />
+      ) : (
+        <FlatList data={likedPosts} keyExtractor={item => item.id} renderItem={renderItem} numColumns={3} />
+      )}
+    </View>
   );
 
-const renderScene = ({ route }) => {
-  switch (route.key) {
-    case 'posts':
-      return renderPosts();
-    case 'likes':
-      return renderLikes();
-    default:
-      return null;
-  }
-};
+  const renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'posts':
+        return renderPosts();
+      case 'likes':
+        return renderLikes();
+      default:
+        return null;
+    }
+  };
+  
 
 
 
@@ -79,7 +97,7 @@ const renderScene = ({ route }) => {
     <View style={styles.header}>
       <View style={styles.header1}>
         <View style={styles.avatarBase}>
-          <Image source={require('../../../assets/avatar.jpeg')} style={styles.avatar} />
+          <Image source={require('../../../assets/joseCarlos.jpg')} style={styles.avatar} />
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.textHeader1}>{posts.length}</Text>
@@ -96,8 +114,8 @@ const renderScene = ({ route }) => {
       </View>
       <View style={styles.header2}>
         <View style={styles.infoUser}>
-          <Text style={styles.username}>Nombre del usuario</Text>
-          <Text style={styles.email}>nombre@vedruna.es</Text>
+          <Text style={styles.username}>José Carlos</Text>
+          <Text style={styles.email}>josecarlos.moreno@a.vedrunasevillasj.es</Text>
         </View>
       </View>
     </View>
@@ -108,6 +126,7 @@ const renderScene = ({ route }) => {
       renderScene={renderScene}
       onIndexChange={setIndex}
       initialLayout={{ width: Dimensions.get('window').width }}
+      lazy
       renderTabBar={props => (
         <TabBar
         {...props}
@@ -130,6 +149,9 @@ const renderScene = ({ route }) => {
 }
 
 const styles = StyleSheet.create({
+  titleprueba: {
+    color: theme.colors.lightGray,
+  },
 container: { 
   flex: 1, 
   backgroundColor: theme.colors.blackish 
@@ -186,8 +208,7 @@ inactiveTab: { color: theme.colors.lightGray },
 
 postContainer: { 
   flex: 1, 
-  margin: 4,
-  gap: 10,
+  margin: 1,
   alignItems: 'center',
   width: 105, 
   height: 115, 
