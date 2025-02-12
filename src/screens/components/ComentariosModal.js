@@ -7,15 +7,17 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { theme } from '../theme'; // Asegúrate de tener un tema global definido
+
 
 const ComentariosModal = ({ visible, onClose, onSubmit }) => {
-  const [comentario, setComentario] = useState('');
+  const [newComment, setNewComment] = useState('');
 
   const handlePublicar = () => {
-    if (comentario.trim() !== '') {
-      onSubmit(comentario); // Llama a la función para manejar el comentario
-      setComentario(''); // Limpia el campo de texto
+    console.log("📩 handlePublicar llamado con comentario:", newComment);
+    if (newComment.trim() !== '') {
+      console.log("✅ Enviando comentario a onSubmit...");
+      onSubmit(newComment); // Llama a la función para manejar el comentario
+      setNewComment(''); // Limpia el campo de texto
       onClose(); // Cierra el modal
     } else {
       alert('Por favor, escribe un comentario.');
@@ -38,8 +40,8 @@ const ComentariosModal = ({ visible, onClose, onSubmit }) => {
             placeholderTextColor='#ffff'
             multiline
             maxLength={500}
-            value={comentario}
-            onChangeText={setComentario}
+            value={newComment}
+            onChangeText={setNewComment}
           />
           <View style={styles.buttonContainer}>
             <TouchableOpacity

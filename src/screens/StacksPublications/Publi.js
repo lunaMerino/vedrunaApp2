@@ -5,18 +5,21 @@ import { theme } from '../theme'
 import LikeButton from '../components/LikeButton';
 import { API_IP, API_PORT } from '@env';
 import ComentariosModal from '../components/ComentariosModal'; // Importa el componente
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { FlatList, Pressable, ScrollView } from 'react-native-gesture-handler';
 
 
 
-export function Publi({ route }) {
+export function Publi({ route, navigation }) {
   const apiURL = `http://${API_IP}:${API_PORT}`;
 
-  const { post } = route.params; // Datos de la publicación
+  const { post, user_id } = route.params; // Datos de la publicación
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(true); // Estado de carga
-  const [newComment, setNewComment] = useState([]); // Comentario nuevo
+  const [newComment, setNewComment] = useState(''); // Comentario nuevo
   const [modalVisible, setModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false); // Estado para forzar la recarga
+
+  console.log("🟢 user_id en Publi:", user_id);
 
 
   // Obtener todos los usuarios
@@ -27,10 +30,10 @@ export function Publi({ route }) {
       if (!response.ok) throw new Error(`Error al obtener usuarios: ${response.status}`);
     
       const users = await response.json();
-      console.log("✅ Usuarios obtenidos:", users);
+      // console.log("✅ Usuarios obtenidos:", users);
       return users;
     } catch (error) {
-      console.error("error al obtener usuarioa",error);
+      console.error("error al obtener usuario",error);
       return [];
     }
   };
@@ -39,18 +42,24 @@ export function Publi({ route }) {
   useEffect(() => {
     const fetchCommentsWithUsers = async () => {
       try {
+        // const response = await fetch(`${apiUrl}/proyecto01/comentarios/${post.id}`);
         const response = await fetch(`http://10.0.2.2:8080/proyecto01/comentarios/${post.id}`);
         if (!response.ok) throw new Error(`Error al obtener comentarios: ${response.status}`);
         const commentsData = await response.json();
-        console.log("✅ Comentarios obtenidos:", commentsData);
 
         const allUsers = await fetchAllUsers(); // Obtener usuarios
+        console.log("🔍 Usuarios cargados:", allUsers);
+
+        console.log("✅ Todos los usuarios:", allUsers); // Verifica todos los usuarios
+        console.log("✅ Comentarios obtenidos:", commentsData); // Verifica los comentarios
 
         // Asociar cada comentario con su usuario correspondiente
         const commentsWithUsers = commentsData.map((comment) => {
           // const userData = allUsers.find(user => user.id === comment.user_id);
-          const userData = allUsers.find(user => String(user.id) === String(comment.user_id));
-          console.log(`🔍 Buscando user_id: ${comment.user_id}, Encontrado:`, userData);
+          const userData = allUsers.find(user => String(user.user_id) === String(comment.user_id));
+          
+          console.log(`🔍 Comentario con user_id: ${comment.user_id}, Usuario encontrado:`, userData);
+
           return {
             ...comment,
             nick: userData ? userData.nick : 'Usuario desconocido'
@@ -67,23 +76,50 @@ export function Publi({ route }) {
     };
 
     fetchCommentsWithUsers();
-  }, [post.id]);
+  }, [post.id, refresh]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        // const response = await fetch(`${apiURL}/proyecto01/comentarios/${post.id}`);
+        const response = await fetch(`http://10.0.2.2:8080/proyecto01/comentarios/${post.id}`);
+        if (!response.ok) {
+          throw new Error(`Error al obtener comentarios: ${response.status}`);
+        }
+        const data = await response.json();
+        setComment(data);
+
+      } catch (error) {
+        console.error(error.message);
+        alert('Hubo un problema al cargar los comentarios.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [post.id, refresh]);
 
    // Manejar el añadir un nuevo comentario
    const handleAddComment = async (newComment) => {
-    if (!newComment.trim()) {
-      alert('Por favor, escribe un comentario.');
+    console.log("🛠️ handleAddComment fue llamado");
+    console.log("⏳ Intentando enviar comentario:", newComment);
+    if (!newComment || typeof newComment !== "string") {
+      console.error("❌ Error: `newComment` es inválido:", newComment);
+      alert("El comentario es inválido.");
       return;
     }
 
+    console.log("✅ Comentario recibido, intentando enviarlo...");
+  
+
     const commentData = {
-      id: null,
-      user_id: userSession.id,
+      user_id,
       idPublicacion: post.id,
       comentario: newComment,
     };
 
-    console.log('Datos enviados:', commentData); // Verifica que el objeto tiene la estructura correcta
+    console.log("📤 Enviando datos:", commentData);
 
     try {
       // const response = await fetch(`${apiURL}/proyecto01/comentarios/put`, {
@@ -92,17 +128,20 @@ export function Publi({ route }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commentData),
       });
+      
+      console.log("📥 Respuesta del servidor:", response); 
 
       if (!response.ok) {
         throw new Error(`Error al guardar el comentario: ${response.status}`);
       }
 
       const savedComment = await response.json();
-      console.log('Comentario guardado:', savedComment);
+      console.log("✅ Comentario guardado correctamente:", savedComment);
 
       setComment((prev) => [...prev, savedComment]); // Actualiza la lista de comentarios
       setNewComment('');
       setModalVisible(false); // Cierra el modal
+      setRefresh(prev => !prev); // 🔄 Fuerza la recarga de comentarios
     } catch (error) {
       console.error(error.message);
       alert('Hubo un problema al guardar el comentario. Inténtalo de nuevo.');
@@ -153,6 +192,14 @@ export function Publi({ route }) {
     <View style={styles.container}>
 
       <View style={styles.contHeaderPubli}>
+        <Pressable
+          onPress={() => navigation.navigate('FlatListPubli')}
+        >
+          <Image 
+            source={require("../../../assets/volver_atras.png")}
+            style= {styles.flecha}
+          />
+        </Pressable>
         <View style={styles.avatarBase}>
           <Image
             source={require('../../../assets/avatar.jpeg')}
@@ -200,15 +247,23 @@ export function Publi({ route }) {
         <Text style={styles.comentario}>COMENTARIOS</Text>
         <FlatList
           data={comment}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
           ListEmptyComponent={<Text style={styles.noComments}>No hay comentarios</Text>}
           renderItem={({ item }) => (
             <View style={styles.informacionComentario}>
+              <View style={styles.avatarBase}>
+                <Image
+                  source={require('../../../assets/avatar.jpeg')}
+                  style={styles.avatar}
+                />
+              </View>
+              <View style={styles.datos}>
               <Text style={styles.username}>{item.nick}</Text>
               <Text style={styles.commentText}>{item.comentario}</Text>
+              </View>
             </View>
           )}
-
+          scrollEnabled={false}  
         />
       </View>
 
@@ -239,6 +294,10 @@ const styles = StyleSheet.create({
     marginTop: 50,
     paddingLeft: 20,
     gap: 20,
+  },
+
+  flecha:{
+    marginTop: 10
   },
   
   contPubli: {
@@ -335,7 +394,8 @@ const styles = StyleSheet.create({
   comentario: {
     color: '#9FC63B',
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 20
   },
 
   seccionComentarios: {
@@ -387,15 +447,25 @@ const styles = StyleSheet.create({
   // estructura de comentarios
 
   informacionComentario:{
-    
+    marginBottom: 20,
+    flexDirection: 'row',
+    gap: 10
+  },
+
+  datos: {
+    flexDirection: 'column'
   },
 
   username: {
-
+    color: '#ffff'
   },
 
   commentText: {
     color: '#868686'
+  },
+
+  noComments:{
+    marginBottom: '18%'
   },
 
 });

@@ -14,6 +14,8 @@ export function Add({ navigation, route }) {
   const [titulo, setTitulo] = useState('');
   const [descripcion, setDescripcion] = useState('');
 
+  console.log("user_id de añadir: ",user_id);
+
   // Solicitar permisos al iniciar la app
   useEffect(() => {
     const requestPermissions = async () => {

@@ -10,6 +10,9 @@ export function TabNavigation({ route }) {
 
   const { params } = route;
   const user_id = params?.user_id;
+
+  console.log("🚀 user_id de tabNavigation:", user_id);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -24,7 +27,7 @@ export function TabNavigation({ route }) {
       <Tab.Screen
         name="Publicaciones"
         component={ Publications }
-
+        initialParams={{ user_id }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />

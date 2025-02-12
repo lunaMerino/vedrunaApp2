@@ -1,9 +1,9 @@
 import React from 'react'
 import { StackNavigationPubli } from '../navegation/StackNavigationPubli';
 
-export function Publications() {
+export function Publications({ route }) {
   return(
-    <StackNavigationPubli />
+    <StackNavigationPubli route={route}/>
   )
 
 };
