@@ -2,6 +2,7 @@ import { Alert, View, Text, StyleSheet, Image, FlatList, TouchableOpacity, Dimen
 import React, { useState, useEffect } from 'react'
 import { theme } from '../theme'
 import { API_IP, API_PORT } from '@env';
+import { useIsFocused } from '@react-navigation/native';
 // npm install react-native-tab-view
 // npm install react-native-pager-view
 
@@ -16,7 +17,14 @@ export function Profile({ route }) {
   const [showLiked, setShowLiked] = useState(false);
   const [loading, setLoading] = useState(true);
   
+  const isFocused = useIsFocused();
+
   useEffect(() => {
+    if (isFocused) {
+      fetchPublicaciones(); // Vuelve a cargar las publicaciones cuando el usuario regresa a la pestaña de perfil
+    }
+  }, [isFocused]);
+
     const fetchPublicaciones = async () => {
       try {
         // const response = await fetch('http://192.168.1.23:8080/proyecto01/publicaciones');
@@ -36,8 +44,6 @@ export function Profile({ route }) {
       }
     };
 
-    fetchPublicaciones();
-  }, [user_id]);
 
   const renderItem = ({ item }) => (
     
