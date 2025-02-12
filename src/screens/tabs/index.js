@@ -1,2 +1,4 @@
-export { HomeScreen } from "./HomeScreen";
-export { SettingsScreen } from "./SettingsScreen";
+export { Publications } from "./Publications";
+export { Add } from "./Add";
+export { Incidencias } from "./Incidencias";
+export { Profile } from "./Profile";

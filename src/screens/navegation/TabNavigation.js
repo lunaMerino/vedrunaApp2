@@ -1,11 +1,18 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { HomeScreen, SettingsScreen } from "../tabs/index";
+import { Publications, Add, Incidencias, Profile } from "../tabs/index";
 import React from "react";
 import { theme } from "../theme";
+import { Image } from "react-native";
 
-export function TabNavigation() {
+export function TabNavigation({ route }) {
   const Tab = createBottomTabNavigator();
+
+  const { params } = route;
+  const user_id = params?.user_id;
+
+  console.log("🚀 user_id de tabNavigation:", user_id);
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -13,14 +20,14 @@ export function TabNavigation() {
         tabBarStyle: { backgroundColor: theme.colors.blackish,
           borderTopWidth: 0
         },
-        tabBarActiveTintColor: "#ffffff",
-        tabBarInactiveTintColor: "#aaa",
+        tabBarActiveTintColor: theme.colors.green,
+        tabBarInactiveTintColor: theme.colors.darkGray,
       }}
     >
       <Tab.Screen
         name="Publicaciones"
-        component={ HomeScreen }
-
+        component={ Publications }
+        initialParams={{ user_id }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />
@@ -28,13 +35,39 @@ export function TabNavigation() {
         }}
       />
       <Tab.Screen
-        name="Ajustes"
-        component={ SettingsScreen }
-
+        name="Añadir"
+        component={ Add }
+        initialParams={{ user_id }}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="add-circle" color={color} size={size} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Incidencias"
+        component={ Incidencias }
+        initialParams={{ user_id }}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings" color={color} size={size} />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="Perfil"
+        component={ Profile }
+        initialParams={{ user_id }}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Image
+                source={
+                  focused
+                    ? require("../../../assets/profile2.png")
+                    : require("../../../assets/profile.png")
+                }
+                style={{ width: 22, height: 22 }}
+              />          ),
         }}
       />
     </Tab.Navigator>

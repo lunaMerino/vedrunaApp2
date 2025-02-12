@@ -1,56 +1,83 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import { theme } from './theme';
-
+import { auth } from './utils/Firebase.js';
+import { signInWithEmailAndPassword } from "firebase/auth";
 export function LoginScreen({ navigation }) {
+  
+  // const [email, setEmail] = useState('usuario23@gmail.com');
+  // const [password, setPassword] = useState('usuario23');
+  const [email, setEmail] = useState('hugo25@gmail.com');
+  const [password, setPassword] = useState('123456');
+
+
+  const handleLogin = () => {
+    if (!email || !password) {
+      Alert.alert('Error', 'Por favor, introduce correo y contraseña');
+      return;
+    }
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const firebaseUID = userCredential.user.uid;
+        navigation.navigate('Tab', { user_id: firebaseUID });
+      })
+      .catch((error) => {
+        Alert.alert('Error', error.message);
+      });
+  };
   return (
+    
     <View style={styles.container}>
       <View style={styles.header}>
-        {/* Header Image */}
+
         <Image
-          source={{ uri: 'https://s3-alpha-sig.figma.com/img/5cc2/326e/4b369d5d71efbfa1f6961ee2c182d04d?Expires=1737936000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=bSZH416UOGXhA4Aliq3e7Kv8LGHYJnn~q~PRmBPfS1u~nsu8DlI~ezms5OkF~alNWW7z7ODkGyg4Lp6cWEBMJZQP-drMkdkbjojQe9-5e3TNeUA9XEMHiyuk~eloimj3eqUBtxLh7jDRbe2nbW01lwTKcHWFLUXRAxUYIqD0-fy4fzEYfuC-MMUhbyf-~z0iaEe5uAupKA-2~ml8Hk8SXhslWOylshxneyocMhf0ZaLe2YaLZgXdUuDqogUjxuKzGxIICSCV6KruHySgvSwtrEC~9iZUms~LDY0yPtgYPJDrn6mz-2sDRNUE7PlWc5F7-cdk4k2GkGNR8jZzXD1thg__' }}
+          source={require('../../assets/logo.png')}
           style={styles.logo}
         />
 
-        {/* Title */}
-        <Text style={styles.title}>VEDRUNA EDUCACIÓN</Text>
+        <View>
+          <Text style={styles.title}>VEDRUNA</Text>
+          <Text style={styles.title}>EDUCACIÓN</Text>
+        </View>
       </View>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
           <View style={styles.fields}>
-            {/* Input Fields */}
             <TextInput
               style={styles.input}
               placeholder="Introduzca su correo o nick..."
-              placeholderTextColor={theme.colors.darkGray} 
+              placeholderTextColor={theme.colors.darkGray}
+              value={email}
+              onChangeText={setEmail}
             />
             <TextInput
               style={styles.input}
               placeholder="Introduzca su contraseña..."
               placeholderTextColor={theme.colors.darkGray} 
               secureTextEntry
+              value={password}
+              onChangeText={setPassword}
             />
           </View>
 
-          {/* Forgot Password */}
           <Text style={styles.forgotPassword}>¿Olvidaste la contraseña?</Text>
 
-          {/* Login Button */}
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}
-            onPress={() => navigation.navigate('Tab')}
             >Log in</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.createAccountContainer}>
-        {/* Create Account */}
           <Text style={styles.createAccount}>
             ¿No tienes cuenta?
-            <Text style={styles.createAccountLink}
-              onPress={() => navigation.navigate('Register')}
-              >Crear cuenta</Text>
+            </Text>
+
+          <Text style={styles.createAccountLink}
+            onPress={() => navigation.navigate('Register')}
+            >Crear cuenta
           </Text>
+
         </View>
       </View>
     </View>
@@ -80,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: 'AsapCondensed-Regular'
+    fontFamily: 'AsapCondensed-Regular',
   },
   form: {
     flex: 1,
@@ -98,7 +125,8 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray,
     borderRadius: 8,
     paddingHorizontal: 15,
-    fontSize: 12,
+    fontFamily: 'Rajdhani_600SemiBold',
+    fontSize: 14,
     alignSelf: 'center',
     color: theme.colors.lightGray,
   },
@@ -107,8 +135,9 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     color: theme.colors.green,
-    fontSize: 10,
+    fontSize: 14,
     alignSelf: 'flex-end',
+    fontFamily: 'Rajdhani_600SemiBold',
     marginTop: 15,
     marginBottom: 30,
   },
@@ -119,11 +148,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: 'Rajdhani_600SemiBold',
     marginBottom: 20,
   },
   buttonText: {
     color: theme.colors.blackish,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   createAccountContainer: {
@@ -132,14 +162,18 @@ const styles = StyleSheet.create({
     borderTopColor: theme.colors.gray,
     borderTopWidth: 1,
     height: 70,
+    flexDirection: 'row',
+    gap: 6
   },
   createAccount: {
     color: theme.colors.lightGray,
-    fontSize: 10,
+    fontFamily: 'Rajdhani_600SemiBold',
+    fontSize: 14,
   },
   createAccountLink: {
     color: theme.colors.green,
     fontWeight: 'bold',
-    fontSize: 10,
+    fontFamily: 'Rajdhani_600SemiBold',
+    fontSize: 14,
   },
 });
