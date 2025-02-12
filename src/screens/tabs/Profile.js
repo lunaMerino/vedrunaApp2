@@ -89,7 +89,7 @@ export function Profile({ route }) {
           </View>
           <View style={styles.textContainer}>
             <Text style={styles.textHeader1}>25</Text>
-            <Text style={styles.textHeader2}>seguidos</Text>
+            <Text style={styles.textHeader2}>siguiendo</Text>
           </View>
         </View>
         <View style={styles.header2}>
@@ -157,12 +157,13 @@ textContainer: {
   justifyContent: 'center' 
 },
 textHeader1: { 
-  fontSize: 12, 
-  fontWeight: 'bold', 
+  fontSize: 12,
+  fontFamily: 'Rajdhani_700Bold',
   color: theme.colors.lightGray 
 },
 textHeader2: { 
-  fontSize: 10, 
+  fontSize: 12,
+  fontFamily: 'Rajdhani_500Medium',
   color: theme.colors.lightGray 
 },
 header2: { 
@@ -174,13 +175,27 @@ infoUser: {
   marginLeft:40,
 },
 username: { 
-  fontSize: 14, 
+  fontSize: 15, 
+  fontFamily: 'Rajdhani_600SemiBold',
   color: theme.colors.green 
 },
-email: { fontSize: 12, color: theme.colors.lightGray, textDecorationLine: 'underline' },
-tabLabel: { fontSize: 14, textTransform: 'capitalize' },
-activeTab: { color: theme.colors.green, fontWeight: 'bold' },
-inactiveTab: { color: theme.colors.lightGray },
+email: { 
+  fontSize: 12, 
+  color: theme.colors.lightGray, 
+  textDecorationLine: 'underline',
+  fontFamily: 'Rajdhani_500Medium',
+},
+tabLabel: { 
+  fontSize: 14, 
+  textTransform: 'capitalize' 
+},
+activeTab: { 
+  color: theme.colors.green, 
+  fontWeight: 'bold' 
+},
+inactiveTab: { 
+  color: theme.colors.lightGray 
+},
 
 buttonContainer: { 
   flexDirection: 'row', 
