@@ -52,7 +52,7 @@ export function RegisterScreen({ navigation }) {
       // navigation.navigate('Add', { user_id: firebaseUID }); 
 
       console.log('Datos enviados al backend:', newUser);
-      const apiURL = `http://${API_IP}:${API_PORT}`;
+      const apiURL = `http://${API_IP}:${API_PORT}` ;
       //  return fetch(`${apiURL}/proyecto01/users`, {
         return fetch(`http://10.0.2.2:8080/proyecto01/users`, {
         method: 'POST',
@@ -95,9 +95,10 @@ export function RegisterScreen({ navigation }) {
       <View style={styles.form}>
         <Text style={styles.title}>Completar los siguientes campos:</Text>
         <TextInput
-          style={styles.input}
+          style={styles.input}  // Cambia la fuente del texto dentro del input
           placeholder="Introduzca su correo"
           placeholderTextColor={theme.colors.darkGray}
+          placeholderStyle={{ fontFamily: 'Rajdhani_400Regular' }} // Cambia la fuente del placeholder
           value={form.email}
           onChangeText={(value) => handleInputChange('email', value)}
         />
@@ -199,6 +200,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 12,
     fontSize: 12,
+    fontFamily: 'Rajdhani_600SemiBold',
     color: theme.colors.lightGray,
     marginBottom: 15,
   },

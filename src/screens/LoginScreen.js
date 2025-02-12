@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.gray,
     borderRadius: 8,
     paddingHorizontal: 15,
+    fontFamily: 'Rajdhani_600SemiBold',
     fontSize: 12,
     alignSelf: 'center',
     color: theme.colors.lightGray,
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     color: theme.colors.green,
     fontSize: 10,
     alignSelf: 'flex-end',
+    fontFamily: 'Rajdhani_600SemiBold',
     marginTop: 15,
     marginBottom: 30,
   },
@@ -140,6 +142,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
+    fontFamily: 'Rajdhani_600SemiBold',
     marginBottom: 20,
   },
   buttonText: {
@@ -153,14 +156,17 @@ const styles = StyleSheet.create({
     borderTopColor: theme.colors.gray,
     borderTopWidth: 1,
     height: 70,
+    gap: 8,
   },
   createAccount: {
     color: theme.colors.lightGray,
+    fontFamily: 'Rajdhani_600SemiBold',
     fontSize: 10,
   },
   createAccountLink: {
     color: theme.colors.green,
     fontWeight: 'bold',
+    fontFamily: 'Rajdhani_600SemiBold',
     fontSize: 10,
   },
 });

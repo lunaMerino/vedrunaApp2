@@ -12,9 +12,10 @@ const LikeButton = ({ item, userId }) => {
   
   // Verificar si el usuario ya ha dado like
   useEffect(() => {
+    // Alert.alert("Item", JSON.stringify(item, null, 2));
     const checkIfLiked = () => {
       if (!item || !Array.isArray(item.like)) {
-        console.error("El item no contiene la propiedad 'like' o no es un array.");
+        Alert.alert("El item no contiene la propiedad 'like' o no es un array.");
         return;
       }
 
@@ -47,7 +48,9 @@ const LikeButton = ({ item, userId }) => {
       };
 
 
-      const likeUrl = `${apiURL}/put/${item.id}`;
+      const likeUrl = `${apiURL}/proyecto01/publicaciones/put/${item.id}/${item.user_id}`;
+      // const likeUrl = `http://192.168.1.23/put/${item.id}/${item.user_id}`;
+
 
       // Realizar la solicitud PUT para actualizar la publicación
       const response = await fetch(likeUrl, {
@@ -85,10 +88,10 @@ const LikeButton = ({ item, userId }) => {
       onPress={handleLike}
       disabled={loading}
     >
-      <Image
-        source={require("../../../assets/megusta.png")}
-        style={[styles.like, { tintColor: liked ? theme.colors.green : theme.colors.lightGray }]}
-      />
+    <Image
+      source={liked ? require("../../../assets/heartGreen.png") : require("../../../assets/megusta.png")}
+      style={styles.like}
+    />
       <Text style={styles.titleLike}>
         {likesCount > 0 ? `${likesCount} Me gusta` : 'Me gusta'}
       </Text>
