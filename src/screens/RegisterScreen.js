@@ -148,7 +148,7 @@ export function RegisterScreen({ navigation }) {
         />
 
         <View style={styles.foot}>
-        <Button label='REGISTRARSE' onPress={handleSubmit} />
+        <Button label='FINALIZAR' onPress={handleSubmit} />
         </View>
 
         {/* <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -182,27 +182,27 @@ const styles = StyleSheet.create({
   form: {
     flex: 2,
     width: '85%',
-    paddingTop: 50,
     alignSelf: 'center',
   },
   title: {
     color: theme.colors.green,
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 50,
+    marginBottom: 40,
     paddingLeft: 5,
+    marginTop: 20
   },
   input: {
     width: '100%',
-    height: 25,
+    height: 40,
     borderBottomColor: theme.colors.lightGray,
     borderBottomWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 12,
-    fontSize: 12,
+    fontSize: 16,
     fontFamily: 'Rajdhani_600SemiBold',
     color: theme.colors.lightGray,
-    marginBottom: 15,
+    marginBottom: 10,
   },
   foot:{
     marginTop: 40,

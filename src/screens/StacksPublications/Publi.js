@@ -219,7 +219,7 @@ export function Publi({ route, navigation }) {
       </ImageBackground>
 
       <View style={styles.body}>
-        {/* <LikeButton {item={item}} userId={post.user_id} /> */}
+        <LikeButton item={post} userId={user_id} />
         <Text style={styles.title}>{post.titulo}</Text>
         <Text style={styles.titleDescription}>{post.comentario}</Text>
         <Text style={styles.titleTime}> {daysAgo} </Text>
@@ -465,7 +465,8 @@ const styles = StyleSheet.create({
   },
 
   noComments:{
-    marginBottom: '18%'
+    marginBottom: '18%',
+    color: '#d9d9d9'
   },
 
 });

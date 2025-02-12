@@ -35,7 +35,10 @@ export function LoginScreen({ navigation }) {
           style={styles.logo}
         />
 
-        <Text style={styles.title}>VEDRUNA EDUCACIÓN</Text>
+        <View>
+          <Text style={styles.title}>VEDRUNA</Text>
+          <Text style={styles.title}>EDUCACIÓN</Text>
+        </View>
       </View>
       <View style={styles.form}>
         <View style={styles.inputContainer}>
@@ -68,10 +71,13 @@ export function LoginScreen({ navigation }) {
         <View style={styles.createAccountContainer}>
           <Text style={styles.createAccount}>
             ¿No tienes cuenta?
-            <Text style={styles.createAccountLink}
-              onPress={() => navigation.navigate('Register')}
-              >Crear cuenta</Text>
+            </Text>
+
+          <Text style={styles.createAccountLink}
+            onPress={() => navigation.navigate('Register')}
+            >Crear cuenta
           </Text>
+
         </View>
       </View>
     </View>
@@ -101,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontFamily: 'AsapCondensed-Regular'
+    fontFamily: 'AsapCondensed-Regular',
   },
   form: {
     flex: 1,
@@ -120,7 +126,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 15,
     fontFamily: 'Rajdhani_600SemiBold',
-    fontSize: 12,
+    fontSize: 14,
     alignSelf: 'center',
     color: theme.colors.lightGray,
   },
@@ -129,7 +135,7 @@ const styles = StyleSheet.create({
   },
   forgotPassword: {
     color: theme.colors.green,
-    fontSize: 10,
+    fontSize: 14,
     alignSelf: 'flex-end',
     fontFamily: 'Rajdhani_600SemiBold',
     marginTop: 15,
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: theme.colors.blackish,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   createAccountContainer: {
@@ -156,17 +162,18 @@ const styles = StyleSheet.create({
     borderTopColor: theme.colors.gray,
     borderTopWidth: 1,
     height: 70,
-    gap: 8,
+    flexDirection: 'row',
+    gap: 6
   },
   createAccount: {
     color: theme.colors.lightGray,
     fontFamily: 'Rajdhani_600SemiBold',
-    fontSize: 10,
+    fontSize: 14,
   },
   createAccountLink: {
     color: theme.colors.green,
     fontWeight: 'bold',
     fontFamily: 'Rajdhani_600SemiBold',
-    fontSize: 10,
+    fontSize: 14,
   },
 });

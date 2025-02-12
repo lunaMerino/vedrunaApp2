@@ -27,8 +27,8 @@ export function Profile({ route }) {
 
     const fetchPublicaciones = async () => {
       try {
-        // const response = await fetch('http://192.168.1.23:8080/proyecto01/publicaciones');
-        const response = await fetch(`${apiURL}/proyecto01/publicaciones`);
+        const response = await fetch('http://10.0.2.2:8080/proyecto01/publicaciones');
+        // const response = await fetch(`${apiURL}/proyecto01/publicaciones`);
         const data = await response.json();
         // Filtrar publicaciones del usuario
         const userPosts = data.filter(post => post.user_id === user_id);

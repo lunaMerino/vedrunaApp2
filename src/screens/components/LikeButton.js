@@ -48,8 +48,8 @@ const LikeButton = ({ item, userId }) => {
       };
 
 
-      const likeUrl = `${apiURL}/proyecto01/publicaciones/put/${item.id}/${item.user_id}`;
-      // const likeUrl = `http://192.168.1.23/put/${item.id}/${item.user_id}`;
+      // const likeUrl = `${apiURL}/proyecto01/publicaciones/put/${item.id}/${item.user_id}`;
+      const likeUrl = `http://10.0.2.2:8080/proyecto01/publicaciones/put/${item.id}/${item.user_id}`;
 
 
       // Realizar la solicitud PUT para actualizar la publicación
@@ -71,7 +71,7 @@ const LikeButton = ({ item, userId }) => {
       const newPost = await response.json();
 
       // Actualizar y verificar si el id esta en el array de lkes
-      setLiked(newPost.like.includes(userId));
+      setLiked(newPost.like.includes(item.user_id));
       setLikesCount(newPost.like.length);
 
     } catch (error) {
